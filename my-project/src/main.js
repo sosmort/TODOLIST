@@ -33,3 +33,14 @@ document.addEventListener("click", () => {
   menu.classList.remove("scale-y-100");
   menu.classList.add("scale-y-0");
 });
+// const checkbox = document.querySelector(
+//   '.note_checkbox input[type="checkbox"]'
+// );
+
+// checkbox.addEventListener("change", function () {
+//   if (checkbox.checked) {
+//     console.log("Checked ✅");
+//   } else {
+//     console.log("Not checked ❌");
+//   }
+// });

@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Noto+Sans+Arabic:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 @import "tailwindcss";
 .dropdown-item {
   @apply block px-4 py-2 text-[#6c63ff] cursor-pointer transition;
@@ -5,4 +7,230 @@
 
 .dropdown-item.is-active {
   @apply bg-[#e2e0ff];
+}
+@theme {
+  --font-roboto: "Roboto", sans-serif;
+  --font-kanit: "Kanit", sans-serif;
+}
+/* Adapted to project main color: #6c63ff 
+
+.checkbox-container {
+  display: inline-block;
+  margin: 50px auto;
+  user-select: none;
+}
+
+.task-checkbox {
+  display: none;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  color: #374151;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.checkbox-box {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #d1d5db;
+  border-radius: 6px;
+  margin-right: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+.checkbox-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #6c63ff 0%, #4f46e5 100%);
+  transform: scale(0);
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  border-radius: 4px;
+  opacity: 0;
+}
+
+.checkmark {
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  transform: scale(0.3) rotate(20deg);
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.check-icon {
+  width: 14px;
+  height: 14px;
+  fill: #ffffff;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.success-ripple {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(108, 99, 255, 0.35);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.checkbox-text {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.checkbox-text::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #9ca3af;
+  transition: width 0.4s ease;
+  transform: translateY(-50%);
+}
+
+.checkbox-label:hover .checkbox-box {
+  border-color: #6c63ff;
+  box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.15);
+}
+
+.task-checkbox:checked + .checkbox-label .checkbox-box {
+  border-color: #6c63ff;
+  background: #6c63ff;
+  box-shadow: 0 4px 12px rgba(108, 99, 255, 0.35),
+    0 0 0 2px rgba(108, 99, 255, 0.25);
+}
+
+.task-checkbox:checked + .checkbox-label .checkbox-fill {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.task-checkbox:checked + .checkbox-label .checkmark {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+  animation: checkPop 0.3s ease-out 0.2s;
+}
+
+.task-checkbox:checked + .checkbox-label .success-ripple {
+  animation: rippleSuccess 0.6s ease-out;
+}
+
+.task-checkbox:checked + .checkbox-label .checkbox-text {
+  color: #6b7280;
+}
+
+.task-checkbox:checked + .checkbox-label .checkbox-text::after {
+  width: 100%;
+}
+
+.checkbox-label:active .checkbox-box {
+  transform: scale(0.95);
+}
+
+@keyframes checkPop {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(-5deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes rippleSuccess {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.6;
+  }
+  70% {
+    width: 50px;
+    height: 50px;
+    opacity: 0.25;
+  }
+  100% {
+    width: 60px;
+    height: 60px;
+    opacity: 0;
+  }
+}
+*/
+/* From Uiverse.io by Gautammsharma */
+.note_checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Checkbox box */
+.checkmark {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  border: 2px solid #6c63ff;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+/* Checked state */
+.note_checkbox input[type="checkbox"]:checked ~ .checkmark {
+  background-color: #6c63ff;
+  border-color: #6c63ff;
+}
+
+/* Check icon */
+.note_checkbox input[type="checkbox"]:checked ~ .checkmark::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 6px;
+  width: 4px;
+  height: 10px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Focus state (accessible)
+.note_checkbox input[type="checkbox"]:focus ~ .checkmark {
+  box-shadow: 0 0 0 3px #6c63ff66;
+}
+
+.note_checkbox:hover input[type="checkbox"] ~ .checkmark {
+  border-color: #5a52e0;
+} */
+
+/* Disabled */
+.note_checkbox input[type="checkbox"]:disabled ~ .checkmark {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Disabled hover */
+.note_checkbox input[type="checkbox"]:disabled ~ .checkmark:hover {
+  border-color: #a5a5a5;
 }
