@@ -1,0 +1,8 @@
+@import "tailwindcss";
+.dropdown-item {
+  @apply block px-4 py-2 text-[#6c63ff] cursor-pointer transition;
+}
+
+.dropdown-item.is-active {
+  @apply bg-[#e2e0ff];
+}
