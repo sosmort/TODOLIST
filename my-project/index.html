@@ -13,6 +13,12 @@
 
   <link href="/src/style.css" rel="stylesheet">
   <title>To Do List</title>
+  <style>
+    body {
+      opacity: 0;
+      visibility: hidden;
+    }
+  </style>
 </head>
 
 <body class="h-screen flex justify-center bg-gray-100">
@@ -59,7 +65,7 @@
           <ul id="menu"
             class="absolute top-full right-0 mt-1 py-3 rounded-lg shadow-md scale-y-0 origin-top transition duration-200">
             <li class="block px-4 py-2  text-[#6c63ff]
-            transition cursor-pointer uppercase dropdown-item is-active ">all</li>
+            transition cursor-pointer uppercase dropdown-item  ">all</li>
             <li class="block px-4 py-2  text-[#6c63ff]
             hover:bg-[#e2e0ff] 
             transition cursor-pointer uppercase">complete</li>
@@ -102,38 +108,62 @@
         </div>
       </div>
     </div>
-    <button class="
-      fixed
-      bottom-8
-      right-[calc(50vw-372px)]
-      z-[99]
-  
-      flex items-center justify-center
-      w-[50px] h-[50px]
-      rounded-full
-  
-      bg-[#6c63ff]
-      border-2 border-[#6c63ff]
-      shadow-[0_0_4px_0_#6c63ff]
-  
-      text-[#f7f7f7]
-      font-kanit
-      text-[18px]
-      font-medium
-      uppercase
-  
-      transition
-      duration-200
-      ease-in-out
-  
-      hover:shadow-[0_0_8px_0_#6c63ff]
-      cursor-pointer
-    ">
+    <button class="cross fixed bottom-8 right-[calc(50vw-372px)] z-[98] flex items-center justify-center w-[50px] h-[50px] rounded-full bg-[#6c63ff] border-2 border-[#6c63ff]
+        shadow-[0_0_4px_0_#6c63ff]
+    
+        text-[#f7f7f7]
+        font-kanit
+        text-[18px]
+        font-medium
+        uppercase
+    
+        transition
+        duration-200
+        ease-in-out
+    
+        hover:shadow-[0_0_8px_0_#6c63ff]
+        cursor-pointer
+      ">
       <svg class="w-6 h-6 rotate-45" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M19 5L5 19M5.00001 5L19 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
           stroke-linejoin="round" />
       </svg>
     </button>
+
+    <div class="note_toast hidden">
+      <div
+        class="
+        popup_card fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#f7f7f7] z-99 font-kanit
+        border border-transparent rounded-[16px] flex flex-col gap-[25px] h-[40vh] min-h-[200px] max-w-[500px] w-full overflow-hidden px-[30px] py-[18px]">
+        <h2 class="popup__title text-[26px] font-medium text-[#252525] uppercase text-center font-roboto">New Note</h2>
+        <form id="add_note" class="flex flex-auto flex-col gap-[25px]">
+          <input class="bg-[#f7f7f7] border border-[#6c63ff] rounded-[5px] text-[#6c63ff] font-inter text-base font-medium h-[40px]
+          outline outline-3 outline-transparent
+          px-[46px]
+          relative
+          transition-[outline,border,color,background-color]
+          duration-200
+          ease-in-out
+          focus:outline focus:outline-3 focus:outline-[#6c63ff66]" type="text" placeholder="New note">
+          <div class="popup__buttons flex justify-between mt-auto w-full ">
+            <div
+              class="popup_cancel_button flex items-center h-9.5 py-2 px-[22px] rounded-lg border text-[18px] border-[#6c63ff] capitalize cursor-pointer text-[#534cc2]">
+              cancel
+            </div>
+            <button
+              class="popup_apply_button flex items-center h-9.5 py-2 px-5.5 rounded-lg border text-[18px] border-[#6c63ff] capitalize cursor-pointer text-white bg-[#534cc2]"
+              type="submit">
+              apply
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div
+        class="layer fixed top-0 left-0 h-full w-full z-98 transition-[width] duration-800 ease-in-out bg-black/50 backdrop-blur-[5px]">
+      </div>
+    </div>
+
 
   </div>
 
