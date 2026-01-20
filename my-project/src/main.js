@@ -8,7 +8,14 @@ const popupcard = document.querySelector(".note_toast");
 const closePopupcard = document.querySelector(".popup_cancel_button");
 const applyNoteForm = document.querySelector(".popup_apply_button");
 const layer = document.querySelector(".layer");
+let container = document.querySelector(".list_container");
+const todoInput = document.querySelector(".todo_input");
+const todoArray = JSON.parse(localStorage.getItem("todoArray")) || [];
 
+if (todoArray != []) {
+  createElementHmtl();
+}
+// const todoArray = [];
 // toggle dropdown
 btn.addEventListener("click", (e) => {
   e.stopPropagation();
@@ -44,18 +51,6 @@ document.addEventListener("click", () => {
   menu.classList.add("scale-y-0");
 });
 
-// const checkbox = document.querySelector(
-//   '.note_checkbox input[type="checkbox"]'
-// );
-
-// checkbox.addEventListener("change", function () {
-//   if (checkbox.checked) {
-//     console.log("Checked ✅");
-//   } else {
-//     console.log("Not checked ❌");
-//   }
-// });
-
 cross.addEventListener("click", () => {
   popupcard.style.display = "block";
 });
@@ -66,9 +61,68 @@ layer.addEventListener("click", () => {
   popupcard.style.display = "none";
 });
 
-applyNoteForm.addEventListener("click", (e) => {
+// applyNoteForm.addEventListener("click", (e) => {
+//   e.preventDefault();
+//   console.log("click");
+// });
+applyNoteForm.addEventListener("click", function (e) {
   e.preventDefault();
-  console.log("click");
+  if (todoInput.value !== "") {
+    todoArray.push({ text: todoInput.value, checked: false });
+    localStorage.setItem("todoArray", JSON.stringify(todoArray));
+    console.log(todoArray);
+    clearInput();
+  }
+  createElementHmtl();
+  popupcard.style.display = "none";
+});
+function createElementHmtl() {
+  container.innerHTML = "";
+  const parent = document.createElement("div");
+  parent.classList.add("note_parent");
+
+  todoArray.forEach((elements, index) => {
+    const node = document.createElement("label");
+    node.classList.add("note_checkbox");
+    node.setAttribute("data_index", index);
+    if (elements.checked == true) {
+      node.innerHTML = `
+              <input type="checkbox" class="peer hidden" checked>
+              <span class="checkmark"></span>
+              <div
+                class="note_text text-[#252525] text-[20px] font-medium peer-checked:line-through peer-checked:opacity-60">
+                ${elements.text}
+              </div>
+            `;
+    } else {
+      node.innerHTML = `
+              <input type="checkbox" class="peer hidden">
+              <span class="checkmark"></span>
+              <div
+                class="note_text text-[#252525] text-[20px] font-medium peer-checked:line-through peer-checked:opacity-60">
+                ${elements.text}
+              </div>
+            `;
+    }
+    parent.appendChild(node);
+  });
+  container.appendChild(parent);
+}
+function clearInput() {
+  todoInput.value = "";
+}
+// document.querySelectorAll('input[type="checkbox"]').forEach((item) => {
+//   item.addEventListener("click", () => {
+//     console.log("click");
+//   });
+// });
+container.addEventListener("click", (e) => {
+  const label = e.target.closest(".note_checkbox");
+  var index = label.getAttribute("data_index");
+  if (!label) return;
+  todoArray[index].checked = !todoArray[index].checked;
+  localStorage.setItem("todoArray", JSON.stringify(todoArray));
+  createElementHmtl();
 });
 
 body.style.opacity = "1";

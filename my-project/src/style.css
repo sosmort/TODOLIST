@@ -8,6 +8,9 @@
 .dropdown-item.is-active {
   @apply bg-[#e2e0ff];
 }
+.note_checkbox {
+  @apply flex items-center gap-[17px] cursor-pointer select-none border-b border-[rgba(108,99,255,.5)] py-[17px];
+}
 @theme {
   --font-roboto: "Roboto", sans-serif;
   --font-kanit: "Kanit", sans-serif;
