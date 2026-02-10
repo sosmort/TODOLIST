@@ -10,20 +10,49 @@ const applyNoteForm = document.querySelector(".popup_apply_button");
 const layer = document.querySelector(".layer");
 let container = document.querySelector(".list_container");
 const todoInput = document.querySelector(".todo_input");
-const todoArray = JSON.parse(localStorage.getItem("todoArray")) || [];
+let todoArray = JSON.parse(localStorage.getItem("todoArray")) || [];
+let completeArray = [];
+let incompleteArray = [];
 
-if (todoArray != []) {
-  createElementHmtl();
-}
-// const todoArray = [];
-// toggle dropdown
+document.addEventListener("DOMContentLoaded", (event) => {
+  const dropdownLabel = document.querySelector("#dropdownLabel");
+  const dropDownSave = localStorage.getItem("dropDown");
+  const dropdownItems = document.querySelectorAll(".dropdown-item");
+
+  dropdownItems.forEach((item) => {
+    item.classList.remove("bg-[#e2e0ff]");
+    if (item.textContent.toLowerCase() === dropDownSave) {
+      item.classList.add("bg-[#e2e0ff]");
+    }
+  });
+
+  if (dropDownSave == "all") {
+    dropdownLabel.textContent = dropDownSave;
+    console.log(todoArray);
+    createElementHmtl(todoArray);
+  } else {
+    if (dropDownSave == "complete") {
+      dropdownLabel.textContent = dropDownSave;
+      completeArray = JSON.parse(localStorage.getItem("completeArray"));
+      console.log(completeArray, "---");
+      createElementHmtl(completeArray);
+    } else {
+      if (dropDownSave == "incomplete") {
+        console.log(incompleteArray, "---");
+        dropdownLabel.textContent = dropDownSave;
+        incompleteArray = JSON.parse(localStorage.getItem("incompleteArray"));
+        createElementHmtl(incompleteArray);
+      }
+    }
+  }
+});
+
 btn.addEventListener("click", (e) => {
   e.stopPropagation();
   menu.classList.toggle("scale-y-100");
   menu.classList.toggle("scale-y-0");
 });
 
-// select item
 items.forEach((item) => {
   if (item.textContent == "all") {
     item.classList.add("bg-[#e2e0ff]");
@@ -31,21 +60,35 @@ items.forEach((item) => {
   item.addEventListener("click", (e) => {
     e.stopPropagation();
     item.classList.remove("bg-[#e2e0ff]");
-    console.log(e.target.textContent);
-    // update button text
     label.textContent = item.textContent;
+    localStorage.setItem("dropDown", label.textContent);
 
-    // active style
     items.forEach((i) => i.classList.remove("bg-[#e2e0ff]"));
     item.classList.add("bg-[#e2e0ff]");
 
-    // close dropdown
     menu.classList.remove("scale-y-100");
     menu.classList.add("scale-y-0");
+
+    if (item.textContent == "incomplete") {
+      incompleteArray = todoArray.filter((item) => item.checked == false);
+      localStorage.setItem("incompleteArray", JSON.stringify(incompleteArray));
+      createElementHmtl(incompleteArray);
+
+      console.log("incomplete", incompleteArray);
+    }
+    if (item.textContent == "complete") {
+      completeArray = todoArray.filter((item) => item.checked == true);
+      localStorage.setItem("completeArray", JSON.stringify(completeArray));
+      createElementHmtl(completeArray);
+      console.log("complete", completeArray);
+    }
+    if (item.textContent == "all") {
+      createElementHmtl(todoArray);
+      console.log("all", todoArray);
+    }
   });
 });
 
-// click outside → close
 document.addEventListener("click", () => {
   menu.classList.remove("scale-y-100");
   menu.classList.add("scale-y-0");
@@ -53,6 +96,7 @@ document.addEventListener("click", () => {
 
 cross.addEventListener("click", () => {
   popupcard.style.display = "block";
+  setTimeout(() => todoInput.focus(), 10);
 });
 closePopupcard.addEventListener("click", () => {
   popupcard.style.display = "none";
@@ -61,68 +105,152 @@ layer.addEventListener("click", () => {
   popupcard.style.display = "none";
 });
 
-// applyNoteForm.addEventListener("click", (e) => {
-//   e.preventDefault();
-//   console.log("click");
-// });
 applyNoteForm.addEventListener("click", function (e) {
   e.preventDefault();
   if (todoInput.value !== "") {
-    todoArray.push({ text: todoInput.value, checked: false });
+    const dropdownLabel = document.querySelector("#dropdownLabel");
+    const dropDownSave = localStorage.getItem("dropDown");
+    dropdownLabel.textContent = dropDownSave;
+    todoArray.push({ text: todoInput.value, checked: false, id: Date.now() });
     localStorage.setItem("todoArray", JSON.stringify(todoArray));
     console.log(todoArray);
     clearInput();
   }
-  createElementHmtl();
+  createElementHmtl(todoArray);
   popupcard.style.display = "none";
 });
-function createElementHmtl() {
+function createElementHmtl(displayArray) {
   container.innerHTML = "";
-  const parent = document.createElement("div");
-  parent.classList.add("note_parent");
 
-  todoArray.forEach((elements, index) => {
-    const node = document.createElement("label");
-    node.classList.add("note_checkbox");
-    node.setAttribute("data_index", index);
-    if (elements.checked == true) {
-      node.innerHTML = `
-              <input type="checkbox" class="peer hidden" checked>
-              <span class="checkmark"></span>
-              <div
-                class="note_text text-[#252525] text-[20px] font-medium peer-checked:line-through peer-checked:opacity-60">
-                ${elements.text}
-              </div>
-            `;
-    } else {
-      node.innerHTML = `
-              <input type="checkbox" class="peer hidden">
-              <span class="checkmark"></span>
-              <div
-                class="note_text text-[#252525] text-[20px] font-medium peer-checked:line-through peer-checked:opacity-60">
-                ${elements.text}
-              </div>
-            `;
-    }
-    parent.appendChild(node);
-  });
-  container.appendChild(parent);
+  if (displayArray.length != 0) {
+    const parent = document.createElement("div");
+    parent.classList.add("note_parent");
+    displayArray.forEach((elements, index) => {
+      const node = document.createElement("label");
+      node.classList.add("note_checkbox", "group", "relative");
+      node.setAttribute("data_index", index);
+      node.setAttribute("note_id", elements.id);
+      if (elements.checked == true) {
+        node.innerHTML = `
+                <input type="checkbox" class="peer hidden" checked>
+                <span class="checkmark"></span>
+                <div
+                  class="note_text text-[#252525] text-[20px] font-medium peer-checked:line-through peer-checked:opacity-60">
+                  ${elements.text}
+                </div>
+                <div class="delete_note absolute right-0 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M3.87414 7.61505C3.80712 6.74386 4.49595 6 5.36971 6H12.63C13.5039 6 14.1927 6.74385 14.1257 7.61505L13.6064 14.365C13.5463 15.1465 12.8946 15.75 12.1108 15.75H5.88894C5.10514 15.75 4.45348 15.1465 4.39336 14.365L3.87414 7.61505Z"
+                      stroke="#CDCDCD"></path>
+                    <path d="M14.625 3.75H3.375" stroke="#CDCDCD"></path>
+                    <path
+                      d="M7.5 2.25C7.5 1.83579 7.83577 1.5 8.25 1.5H9.75C10.1642 1.5 10.5 1.83579 10.5 2.25V3.75H7.5V2.25Z"
+                      stroke="#CDCDCD"></path>
+                    <path d="M10.5 9V12.75" stroke="#CDCDCD"></path>
+                    <path d="M7.5 9V12.75" stroke="#CDCDCD"></path>
+                  </svg>
+                </div>
+              `;
+      } else {
+        node.innerHTML = `
+                <input type="checkbox" class="peer hidden">
+                <span class="checkmark"></span>
+                <div
+                  class="note_text text-[#252525] text-[20px] font-medium peer-checked:line-through peer-checked:opacity-60">
+                  ${elements.text}
+                </div>
+                <div class="delete_note absolute right-0 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M3.87414 7.61505C3.80712 6.74386 4.49595 6 5.36971 6H12.63C13.5039 6 14.1927 6.74385 14.1257 7.61505L13.6064 14.365C13.5463 15.1465 12.8946 15.75 12.1108 15.75H5.88894C5.10514 15.75 4.45348 15.1465 4.39336 14.365L3.87414 7.61505Z"
+                      stroke="#CDCDCD"></path>
+                    <path d="M14.625 3.75H3.375" stroke="#CDCDCD"></path>
+                    <path
+                      d="M7.5 2.25C7.5 1.83579 7.83577 1.5 8.25 1.5H9.75C10.1642 1.5 10.5 1.83579 10.5 2.25V3.75H7.5V2.25Z"
+                      stroke="#CDCDCD"></path>
+                    <path d="M10.5 9V12.75" stroke="#CDCDCD"></path>
+                    <path d="M7.5 9V12.75" stroke="#CDCDCD"></path>
+                  </svg>
+                </div>
+              `;
+      }
+      parent.appendChild(node);
+    });
+    container.appendChild(parent);
+  } else {
+    const parent = document.createElement("div");
+    parent.classList.add("empty_state");
+    console.log("empty");
+    parent.innerHTML = `<img src="/empty_state.png" alt="" class="w-full max-w-60"> <p class="empty_message">Oops... it's empty :( </p>`;
+    container.appendChild(parent);
+  }
 }
 function clearInput() {
   todoInput.value = "";
 }
-// document.querySelectorAll('input[type="checkbox"]').forEach((item) => {
-//   item.addEventListener("click", () => {
-//     console.log("click");
-//   });
-// });
+
 container.addEventListener("click", (e) => {
+  const deleteButton = e.target.closest(".delete_note");
+
+  const dropDownSave = localStorage.getItem("dropDown");
+
+  if (deleteButton) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    const label = deleteButton.closest(".note_checkbox");
+    const index = label.getAttribute("data_index");
+    const noteId = Number(label.getAttribute("note_id"));
+
+    if (dropDownSave == "all") {
+      todoArray = todoArray.filter((todo) => todo.id !== noteId);
+      localStorage.setItem("todoArray", JSON.stringify(todoArray));
+      createElementHmtl(todoArray);
+    } else {
+      if (dropDownSave == "complete") {
+        const deletedId = noteId;
+        completeArray.splice(index, 1);
+        todoArray = todoArray.filter((todo) => todo.id !== deletedId);
+        localStorage.setItem("todoArray", JSON.stringify(todoArray));
+        localStorage.setItem("completeArray", JSON.stringify(completeArray));
+        createElementHmtl(completeArray);
+      } else {
+        if (dropDownSave == "incomplete") {
+          const deletedId = noteId;
+          incompleteArray.splice(index, 1);
+          todoArray = todoArray.filter((todo) => todo.id !== deletedId);
+          localStorage.setItem("todoArray", JSON.stringify(todoArray));
+          localStorage.setItem(
+            "incompleteArray",
+            JSON.stringify(incompleteArray)
+          );
+          createElementHmtl(incompleteArray);
+        }
+      }
+    }
+    return;
+  }
+
   const label = e.target.closest(".note_checkbox");
-  var index = label.getAttribute("data_index");
   if (!label) return;
-  todoArray[index].checked = !todoArray[index].checked;
+
+  const noteId = Number(label.getAttribute("note_id"));
+
+  const todo = todoArray.find((item) => item.id === noteId);
+  if (!todo) return;
+
+  todo.checked = !todo.checked;
+
   localStorage.setItem("todoArray", JSON.stringify(todoArray));
-  createElementHmtl();
+
+  if (dropDownSave === "complete") {
+    createElementHmtl(todoArray.filter((t) => t.checked));
+  } else if (dropDownSave === "incomplete") {
+    createElementHmtl(todoArray.filter((t) => !t.checked));
+  } else {
+    createElementHmtl(todoArray);
+  }
 });
 
 body.style.opacity = "1";
