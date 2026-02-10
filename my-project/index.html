@@ -57,23 +57,25 @@
 
         " type="text" placeholder="Search note ...">
         </div>
-        <button id="dropdownBtn" class="relative border px-3 py-1 w-[120px] bg-[#f7f7f7]
-        border border-[#6c63ff]
-        rounded-[5px]
-        text-[#6c63ff] cursor-pointer">
-          <span id="dropdownLabel" class="uppercase">all</span>
-          <ul id="menu"
-            class="absolute top-full right-0 mt-1 py-3 rounded-lg shadow-md scale-y-0 origin-top transition duration-200">
-            <li class="block px-4 py-2  text-[#6c63ff]
-            transition cursor-pointer uppercase dropdown-item  ">all</li>
-            <li class="block px-4 py-2  text-[#6c63ff]
-            hover:bg-[#e2e0ff] 
-            transition cursor-pointer uppercase">complete</li>
-            <li class="block px-4 py-2  text-[#6c63ff]
-             hover:bg-[#e2e0ff] 
-             transition cursor-pointer uppercase">incomplete</li>
+        <div class="relative w-[120px]">
+          <button id="dropdownBtn" class="border px-3 py-1 w-full bg-[#6c63ff]
+                   border-2 border-[#6c63ff]
+                   text-[#f7f7f7]
+                   rounded-[5px]
+                   cursor-pointer">
+
+            <span id="dropdownLabel" class="uppercase">all</span>
+          </button>
+
+          <ul id="menu" class="absolute top-full right-0 mt-1 py-3 rounded-lg shadow-md
+                   scale-y-0 origin-top transition duration-200 z-50 bg-white text-center">
+
+            <li class="dropdown-item px-4 py-2 uppercase cursor-pointer">all</li>
+            <li class="dropdown-item px-4 py-2 uppercase cursor-pointer">complete</li>
+            <li class="dropdown-item px-4 py-2 uppercase cursor-pointer">incomplete</li>
           </ul>
-        </button>
+        </div>
+
       </div>
     </div>
     <div class="main flex-auto gap-2 max-w-[550px] py-6 mx-auto">
@@ -102,9 +104,12 @@
 
           </div> 
         </div> -->
+        <div class="empty_state"><img src="/empty_state.png" alt="" class="w-full max-w-60">
+          <p class="empty_message">Oops... it's empty :( </p>
+        </div>
       </div>
     </div>
-    <button class="cross fixed bottom-8 right-[calc(50vw-372px)] z-[98] flex items-center justify-center w-[50px] h-[50px] rounded-full bg-[#6c63ff] border-2 border-[#6c63ff]
+    <button class="cross fixed bottom-8 md:right-[calc(50vw-372px)] right-5  z-[98] flex items-center justify-center w-[50px] h-[50px] rounded-full bg-[#6c63ff] border-2 border-[#6c63ff]
         shadow-[0_0_4px_0_#6c63ff]
     
         text-[#f7f7f7]

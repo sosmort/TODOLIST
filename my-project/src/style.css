@@ -11,10 +11,20 @@
 .note_checkbox {
   @apply flex items-center gap-[17px] cursor-pointer select-none border-b border-[rgba(108,99,255,.5)] py-[17px];
 }
+.empty_state {
+  @apply flex flex-col items-center gap-2 my-2.5;
+}
+.empty_message {
+  @apply font-kanit text-[20px];
+}
 @theme {
   --font-roboto: "Roboto", sans-serif;
   --font-kanit: "Kanit", sans-serif;
 }
+.delete_note {
+  pointer-events: auto;
+}
+
 /* Adapted to project main color: #6c63ff 
 
 .checkbox-container {
