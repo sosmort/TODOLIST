@@ -98,8 +98,8 @@ This improves performance and ensures that dynamically added notes inherit funct
 /
 ├── index.html
 ├── src/
-│   ├── main.js    # Entry point
-│   └── script.js  # Core logic & functions
+│   ├── main.js    # Core logic & functions
+│   └── style.css  # style
 ├── public/
 │   └── images/    # Assets & Icons
 └── package.json
