@@ -11,6 +11,7 @@ const layer = document.querySelector(".layer");
 let container = document.querySelector(".list_container");
 const todoInput = document.querySelector(".todo_input");
 let todoArray = JSON.parse(localStorage.getItem("todoArray")) || [];
+let searchNote = document.querySelector(".searchNote");
 let completeArray = [];
 let incompleteArray = [];
 
@@ -18,6 +19,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
   const dropdownLabel = document.querySelector("#dropdownLabel");
   const dropDownSave = localStorage.getItem("dropDown");
   const dropdownItems = document.querySelectorAll(".dropdown-item");
+
+  searchNote.value = "";
+
+  applyNoteForm.classList.add("disabled-button");
 
   dropdownItems.forEach((item) => {
     item.classList.remove("bg-[#e2e0ff]");
@@ -115,10 +120,22 @@ applyNoteForm.addEventListener("click", function (e) {
     localStorage.setItem("todoArray", JSON.stringify(todoArray));
     console.log(todoArray);
     clearInput();
+  } else {
+    console.log(todoArray);
+    alert("write something");
   }
   createElementHmtl(todoArray);
   popupcard.style.display = "none";
 });
+todoInput.addEventListener("input", function () {
+  if (todoInput.value.trim() === "") {
+    // applyNoteForm.style.opacity = "0.5";
+    applyNoteForm.classList.add("disabled-button");
+  } else {
+    applyNoteForm.classList.remove("disabled-button");
+  }
+});
+
 function createElementHmtl(displayArray) {
   container.innerHTML = "";
 
@@ -181,7 +198,6 @@ function createElementHmtl(displayArray) {
   } else {
     const parent = document.createElement("div");
     parent.classList.add("empty_state");
-    console.log("empty");
     parent.innerHTML = `<img src="/empty_state.png" alt="" class="w-full max-w-60"> <p class="empty_message">Oops... it's empty :( </p>`;
     container.appendChild(parent);
   }
@@ -253,5 +269,24 @@ container.addEventListener("click", (e) => {
   }
 });
 
+searchNote.addEventListener("input", (e) => {
+  const query = e.target.value.toLowerCase().trim();
+  const filtered = todoArray.filter((todo) =>
+    todo.text.toLowerCase().includes(query)
+  );
+  createElementHmtl(filtered);
+});
+/*
+searchNote.addEventListener("input", (e) => {
+  const query = e.target.value.toLowerCase().trim();
+  const tem = todoArray.find((t) => t.text.toLowerCase() == query);
+  if (tem !== undefined) {
+    // console.log(Array(tem));
+    createElementHmtl(Array(tem));
+  } else {
+    createElementHmtl([]); 
+  }
+});
+*/
 body.style.opacity = "1";
 body.style.visibility = "visible";
