@@ -24,6 +24,11 @@
 .delete_note {
   pointer-events: auto;
 }
+.disabled-button {
+  pointer-events: none;
+  opacity: 0.5; /* Optional: Visually indicate the button is disabled */
+  cursor: default; /* Optional: Set the cursor style (though pointer-events: none prevents it from being applied directly) */
+}
 
 /* Adapted to project main color: #6c63ff 
 
