@@ -16,8 +16,7 @@ A modern, vanilla JavaScript task management application focused on clean state 
 
 ## 📸 Preview
 
-![App Preview]([public/AppPreview.png](https://drive.google.com/file/d/1eiL3wrTOsoVOwq8dNLU221Bcm8-9VeWN/view?usp=drive_link))
----
+## ![App Preview](./my-project/public/App%20Preview.png)
 
 ## 🚀 Features
 
