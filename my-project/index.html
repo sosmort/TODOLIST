@@ -24,10 +24,11 @@
 <body class="h-screen flex justify-center bg-gray-100">
   <div class="mx-auto max-w-[780px] px-4 w-full relative">
     <div class="container pt-10 flex flex-col gap-[18px] h-fit">
-      <h1 class="text-[26px] font-medium text-[#252525] uppercase text-center font-roboto">
+      <h1 class="text-xl sm:text-2xl md:text-[26px] font-medium text-[#252525] uppercase text-center font-roboto">
         Todo List
       </h1>
-      <div class="field flex gap-3">
+      <!-- <div class="field flex gap-3"> -->
+      <div class="field flex flex-col sm:flex-row gap-3">
         <div class="input_container relative flex-1">
           <svg
             class="field__button  absolute top-1/2 left-[12px] -translate-y-1/2 w-[21px] h-[21px] bg-transparent z-1 cursor-pointer"
@@ -37,6 +38,7 @@
               fill="#6C63FF"></path>
           </svg>
           <input class="
+          searchNote
           bg-[#f7f7f7]
           border border-[#6c63ff]
           rounded-[5px]
@@ -57,7 +59,7 @@
 
         " type="text" placeholder="Search note ...">
         </div>
-        <div class="relative w-[120px]">
+        <div class="relative w-full sm:w-[120px]">
           <button id="dropdownBtn" class="border px-3 py-1 w-full bg-[#6c63ff]
                    border-2 border-[#6c63ff]
                    text-[#f7f7f7]
@@ -68,7 +70,7 @@
           </button>
 
           <ul id="menu" class="absolute top-full right-0 mt-1 py-3 rounded-lg shadow-md
-                   scale-y-0 origin-top transition duration-200 z-50 bg-white text-center">
+                   scale-y-0 origin-top transition duration-200 z-50 bg-white text-center w-full">
 
             <li class="dropdown-item px-4 py-2 uppercase cursor-pointer">all</li>
             <li class="dropdown-item px-4 py-2 uppercase cursor-pointer">complete</li>
@@ -135,8 +137,10 @@
       <div
         class="
         popup_card fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#f7f7f7] z-99 font-kanit
-        border border-transparent rounded-[16px] flex flex-col gap-[25px] h-[40vh] min-h-[200px] max-w-[500px] w-full overflow-hidden px-[30px] py-[18px]">
-        <h2 class="popup__title text-[26px] font-medium text-[#252525] uppercase text-center font-roboto">New Note</h2>
+        border border-transparent rounded-[16px] flex flex-col gap-[25px] h-[250px] min-h-[200px] max-w-[500px] w-full overflow-hidden px-[30px] py-[18px]">
+        <h2
+          class="popup__title text-xl sm:text-2xl md:text-[26px] font-medium text-[#252525] uppercase text-center font-roboto">
+          New Note</h2>
         <form id="add_note" class="flex flex-auto flex-col gap-[25px]">
           <input class="todo_input bg-[#f7f7f7] border border-[#6c63ff] rounded-[5px] text-[#6c63ff] font-inter text-base font-medium h-[40px]
           outline outline-3 outline-transparent
