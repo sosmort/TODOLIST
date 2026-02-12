@@ -120,9 +120,6 @@ applyNoteForm.addEventListener("click", function (e) {
     localStorage.setItem("todoArray", JSON.stringify(todoArray));
     console.log(todoArray);
     clearInput();
-  } else {
-    console.log(todoArray);
-    alert("write something");
   }
   createElementHmtl(todoArray);
   popupcard.style.display = "none";
