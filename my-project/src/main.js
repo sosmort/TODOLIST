@@ -1,4 +1,6 @@
 const body = document.querySelector("body");
+const themeToggle = document.getElementById("themeToggle");
+const html = document.documentElement;
 const btn = document.getElementById("dropdownBtn");
 const label = document.getElementById("dropdownLabel");
 const menu = document.getElementById("menu");
@@ -10,17 +12,97 @@ const applyNoteForm = document.querySelector(".popup_apply_button");
 const layer = document.querySelector(".layer");
 let container = document.querySelector(".list_container");
 const todoInput = document.querySelector(".todo_input");
-let todoArray = JSON.parse(localStorage.getItem("todoArray")) || [];
+let todoArray = JSON.parse(localStorage.getItem("todoArray"));
 let searchNote = document.querySelector(".searchNote");
 let completeArray = [];
 let incompleteArray = [];
 
-document.addEventListener("DOMContentLoaded", (event) => {
+const savedTheme = localStorage.getItem("theme");
+
+if (savedTheme === "dark") {
+  html.classList.add("dark");
+  themeToggle.textContent = "☀️";
+}
+
+// Toggle theme
+const darkMode = () => {
+  html.classList.toggle("dark");
+  const popupCard = document.querySelector(".popup_card");
+
+  if (html.classList.contains("dark")) {
+    body.classList.remove("bg-gray-100");
+    popupCard.classList.add("bg-[#1d1e22]");
+    popupCard.classList.remove("bg-[#fff]");
+    searchNote.classList.remove("text-[#6c63ff]");
+    searchNote.style.color = "white";
+    searchNote.style.setProperty("--placeholder-color", "#ccc");
+    todoInput.classList.remove("text-[#6c63ff]");
+    localStorage.setItem("theme", "dark");
+    themeToggle.textContent = "☀️";
+    themeToggle.style.backgroundColor = "white";
+  } else {
+    body.classList.add("bg-gray-100");
+    popupCard.classList.remove("bg-[#1d1e22]");
+    popupCard.classList.add("bg-[#fff]");
+    searchNote.classList.add("text-[#6c63ff]");
+    searchNote.style.color = "#6c63ff";
+    searchNote.style.setProperty("--placeholder-color", "#6c63ff");
+    todoInput.classList.add("text-[#6c63ff]");
+    localStorage.setItem("theme", "light");
+    themeToggle.textContent = "🌙";
+    themeToggle.style.backgroundColor = "#1d1e22";
+  }
+};
+themeToggle.addEventListener("click", darkMode);
+
+document.addEventListener("DOMContentLoaded", () => {
   const dropdownLabel = document.querySelector("#dropdownLabel");
-  const dropDownSave = localStorage.getItem("dropDown");
+  const dropDownSave = localStorage.getItem("dropDown") || "all";
   const dropdownItems = document.querySelectorAll(".dropdown-item");
 
+  if (!localStorage.getItem("theme")) darkMode();
+  console.log(localStorage.getItem("theme"));
+
+  if (todoArray == null) {
+    todoArray = [
+      { text: "Read recommended book", checked: false, id: 1772027248242 },
+      { text: "Vacation planning", checked: false, id: 1772027252838 },
+      { text: "Cook dinner", checked: false, id: 1772027258023 },
+      { text: "Sign up for training", checked: false, id: 1772027262637 },
+    ];
+    localStorage.setItem("todoArray", JSON.stringify(todoArray));
+    console.log("null");
+  } else {
+    console.log("no null");
+    todoArray = JSON.parse(localStorage.getItem("todoArray"));
+  }
+
   searchNote.value = "";
+  const popupCard = document.querySelector(".popup_card");
+
+  if (html.classList.contains("dark")) {
+    body.classList.remove("bg-gray-100");
+    popupCard.classList.add("bg-[#1d1e22]");
+    popupCard.classList.remove("bg-[#fff]");
+    searchNote.classList.remove("text-[#6c63ff]");
+    searchNote.style.color = "white";
+    searchNote.style.setProperty("--placeholder-color", "#ccc");
+    todoInput.classList.remove("text-[#6c63ff]");
+    localStorage.setItem("theme", "dark");
+    themeToggle.textContent = "☀️";
+    themeToggle.style.backgroundColor = "white";
+  } else {
+    body.classList.add("bg-gray-100");
+    popupCard.classList.remove("bg-[#1d1e22]");
+    popupCard.classList.add("bg-[#fff]");
+    searchNote.classList.add("text-[#6c63ff]");
+    searchNote.style.color = "#6c63ff";
+    searchNote.style.setProperty("--placeholder-color", "#6c63ff");
+    todoInput.classList.add("text-[#6c63ff]");
+    localStorage.setItem("theme", "light");
+    themeToggle.textContent = "🌙";
+    themeToggle.style.backgroundColor = "#1d1e22";
+  }
 
   applyNoteForm.classList.add("disabled-button");
 
@@ -31,6 +113,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   });
 
+  if (!dropDownSave) {
+    dropdownLabel.textContent = "all";
+    createElementHmtl(todoArray);
+  }
   if (dropDownSave == "all") {
     dropdownLabel.textContent = dropDownSave;
     console.log(todoArray);
@@ -38,14 +124,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
   } else {
     if (dropDownSave == "complete") {
       dropdownLabel.textContent = dropDownSave;
-      completeArray = JSON.parse(localStorage.getItem("completeArray"));
+      const completeArray = todoArray.filter((item) => item.checked == true);
       console.log(completeArray, "---");
       createElementHmtl(completeArray);
     } else {
       if (dropDownSave == "incomplete") {
         console.log(incompleteArray, "---");
         dropdownLabel.textContent = dropDownSave;
-        incompleteArray = JSON.parse(localStorage.getItem("incompleteArray"));
+        incompleteArray = todoArray.filter((item) => item.checked == false);
         createElementHmtl(incompleteArray);
       }
     }
@@ -114,7 +200,8 @@ applyNoteForm.addEventListener("click", function (e) {
   e.preventDefault();
   if (todoInput.value !== "") {
     const dropdownLabel = document.querySelector("#dropdownLabel");
-    const dropDownSave = localStorage.getItem("dropDown");
+    // const dropDownSave = localStorage.getItem("dropDown");
+    const dropDownSave = localStorage.getItem("dropDown") || "ALL";
     dropdownLabel.textContent = dropDownSave;
     todoArray.push({ text: todoInput.value, checked: false, id: Date.now() });
     localStorage.setItem("todoArray", JSON.stringify(todoArray));
@@ -149,11 +236,11 @@ function createElementHmtl(displayArray) {
                 <input type="checkbox" class="peer hidden" checked>
                 <span class="checkmark"></span>
                 <div
-                  class="note_text text-[#252525] text-[20px] font-medium peer-checked:line-through peer-checked:opacity-60">
+                  class="note_text  text-[20px] font-medium peer-checked:line-through peer-checked:opacity-60">
                   ${elements.text}
                 </div>
-                <div class="delete_note absolute right-0 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <div class="delete_note absolute right-0 top-1/2 -translate-y-1/2 opacity-100 sm:opacity-0  transition-opacity duration-200">
+                  <svg width="18" height="18" viewBox="0 0 18 18"  xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M3.87414 7.61505C3.80712 6.74386 4.49595 6 5.36971 6H12.63C13.5039 6 14.1927 6.74385 14.1257 7.61505L13.6064 14.365C13.5463 15.1465 12.8946 15.75 12.1108 15.75H5.88894C5.10514 15.75 4.45348 15.1465 4.39336 14.365L3.87414 7.61505Z"
                       stroke="#CDCDCD"></path>
@@ -171,11 +258,11 @@ function createElementHmtl(displayArray) {
                 <input type="checkbox" class="peer hidden">
                 <span class="checkmark"></span>
                 <div
-                  class="note_text text-[#252525] text-[20px] font-medium peer-checked:line-through peer-checked:opacity-60">
+                  class="note_text  text-[20px] font-medium peer-checked:line-through peer-checked:opacity-60">
                   ${elements.text}
                 </div>
                 <div class="delete_note absolute right-0 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="18" height="18" viewBox="0 0 18 18"  xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M3.87414 7.61505C3.80712 6.74386 4.49595 6 5.36971 6H12.63C13.5039 6 14.1927 6.74385 14.1257 7.61505L13.6064 14.365C13.5463 15.1465 12.8946 15.75 12.1108 15.75H5.88894C5.10514 15.75 4.45348 15.1465 4.39336 14.365L3.87414 7.61505Z"
                       stroke="#CDCDCD"></path>

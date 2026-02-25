@@ -21,15 +21,51 @@
   --font-roboto: "Roboto", sans-serif;
   --font-kanit: "Kanit", sans-serif;
 }
+
+.dark {
+  background-color: #1d1e22 !important;
+  color: white;
+}
 .delete_note {
   pointer-events: auto;
 }
-.disabled-button {
-  pointer-events: none;
-  opacity: 0.5; /* Optional: Visually indicate the button is disabled */
-  cursor: default; /* Optional: Set the cursor style (though pointer-events: none prevents it from being applied directly) */
+/* 1. Target the specific path for the lid (usually the 3rd path in your SVG) */
+.delete_note:hover svg path:nth-child(3) {
+  stroke: #ef4444 !important;
+  /* Pivot from the left side of the lid */
+  transition:
+    transform 0.2s ease,
+    stroke 0.2s ease;
 }
 
+/* 2. Make sure all other paths turn red too */
+.delete_note:hover svg path {
+  stroke: #ef4444 !important;
+  transition: stroke 0.2s ease;
+}
+.disabled-button {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: default;
+}
+.searchNote::placeholder {
+  color: var(--placeholder-color, #6c63ff);
+  opacity: 1;
+}
+@media (max-width: 640px) {
+  .delete_note {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}
+
+/* Optional: If you specifically want to target touch devices 
+   (phones/tablets) regardless of screen size */
+@media (pointer: coarse) {
+  .delete_note {
+    opacity: 1 !important;
+  }
+}
 /* Adapted to project main color: #6c63ff 
 
 .checkbox-container {
@@ -251,4 +287,24 @@
 /* Disabled hover */
 .note_checkbox input[type="checkbox"]:disabled ~ .checkmark:hover {
   border-color: #a5a5a5;
+}
+.delete_note {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease;
+  z-index: 10; /* Keep it above the checkmark */
+}
+/* Ensure the delete icon doesn't disappear when the note is checked */
+.note_checkbox input[type="checkbox"]:checked ~ .delete_note {
+  display: block !important;
+  /* If you want it a bit faded when checked, use 0.4, otherwise 1 */
+  opacity: 0.4;
+}
+
+/* Maintain hover priority even when checked */
+.note_checkbox:hover .delete_note {
+  opacity: 1 !important;
+  visibility: visible !important;
 }
