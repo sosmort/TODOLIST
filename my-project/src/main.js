@@ -56,10 +56,6 @@ const darkMode = () => {
 themeToggle.addEventListener("click", darkMode);
 
 document.addEventListener("DOMContentLoaded", () => {
-  const dropdownLabel = document.querySelector("#dropdownLabel");
-  const dropDownSave = localStorage.getItem("dropDown") || "all";
-  const dropdownItems = document.querySelectorAll(".dropdown-item");
-
   if (!localStorage.getItem("theme")) darkMode();
   console.log(localStorage.getItem("theme"));
 
@@ -76,6 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("no null");
     todoArray = JSON.parse(localStorage.getItem("todoArray"));
   }
+  applyFilter();
 
   searchNote.value = "";
   const popupCard = document.querySelector(".popup_card");
@@ -105,7 +102,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   applyNoteForm.classList.add("disabled-button");
-
+});
+function applyFilter() {
+  const dropdownLabel = document.querySelector("#dropdownLabel");
+  const dropDownSave = localStorage.getItem("dropDown") || "all";
+  const dropdownItems = document.querySelectorAll(".dropdown-item");
   dropdownItems.forEach((item) => {
     item.classList.remove("bg-[#e2e0ff]");
     if (item.textContent.toLowerCase() === dropDownSave) {
@@ -136,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   }
-});
+}
 
 btn.addEventListener("click", (e) => {
   e.stopPropagation();
@@ -293,7 +294,7 @@ function clearInput() {
 container.addEventListener("click", (e) => {
   const deleteButton = e.target.closest(".delete_note");
 
-  const dropDownSave = localStorage.getItem("dropDown");
+  const dropDownSave = localStorage.getItem("dropDown") || "all";
 
   if (deleteButton) {
     e.stopPropagation();
@@ -304,6 +305,7 @@ container.addEventListener("click", (e) => {
     const noteId = Number(label.getAttribute("note_id"));
 
     if (dropDownSave == "all") {
+      console.log("--");
       todoArray = todoArray.filter((todo) => todo.id !== noteId);
       localStorage.setItem("todoArray", JSON.stringify(todoArray));
       createElementHmtl(todoArray);
